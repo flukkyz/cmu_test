@@ -12,7 +12,7 @@ app.use(basicAuth({
 app.use(express.json())
 app.use(cors())
 
-app.get('/',async (req, res) => {
+app.get('/employees',async (req, res) => {
     try {
         const lists = await Employee.findAll()
         return res.json({result: lists})
@@ -22,7 +22,7 @@ app.get('/',async (req, res) => {
         })
     }
 })
-app.post('/',async (req, res) => {
+app.post('/employees',async (req, res) => {
     const data = req.body
     if(data){
         try {
@@ -42,7 +42,7 @@ app.post('/',async (req, res) => {
         message: 'Bad request, No body data'
     })
 })
-app.get('/:id',async (req, res) => {
+app.get('/employees/:id',async (req, res) => {
     const id = req.params.id
     if(id){
         try {
@@ -58,7 +58,7 @@ app.get('/:id',async (req, res) => {
         message: 'Bad request, No param :id'
     })
 })
-app.put('/:id',async (req, res) => {
+app.put('/employees/:id',async (req, res) => {
     const id = req.params.id
     const data = req.body
     if(id && data){
@@ -83,7 +83,7 @@ app.put('/:id',async (req, res) => {
         message: 'Bad request not param :id'
     })
 })
-app.delete('/:id',async (req, res) => {
+app.delete('/employees/:id',async (req, res) => {
     const id = req.params.id
     if(id){
         try {
