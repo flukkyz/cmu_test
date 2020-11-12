@@ -83,7 +83,26 @@ app.put('/:id',async (req, res) => {
         message: 'Bad request not param :id'
     })
 })
-
+app.delete('/:id',async (req, res) => {
+    const id = req.params.id
+    if(id){
+        try {
+            await Employee.destroy({
+                where: {
+                    id
+                }
+            })
+            return res.status(204).send()
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Cannot get data from database.'
+            })
+        }
+    }
+    return res.status(400).json({
+        message: 'Bad request, No param :id'
+    })
+})
 
  
 var server = app.listen(8081, () => {
