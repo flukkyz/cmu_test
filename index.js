@@ -78,7 +78,7 @@ app.get('/employees/:id',async (req, res) => {
     const id = req.params.id
     if(id){
         try {
-            const lists = await Employee.findAll()
+            const lists = await Employee.findByPk(id)
             return res.json({result: lists})
         } catch (error) {
             return res.status(500).json({
@@ -126,7 +126,7 @@ app.put('/employees/:id',async (req, res) => {
             })
         }
         try {
-            const newData = await db.sequelize.transaction((t) => {
+            db.sequelize.transaction((t) => {
                 return Employee.update(data,{
                     where: {
                         id
@@ -135,7 +135,7 @@ app.put('/employees/:id',async (req, res) => {
                     transaction: t
                 })
             })
-            return res.json({result: newData})
+            return res.json({result: data})
         } catch (error) {
             return res.status(500).json({
                 message: 'Cannot put data from database.'
