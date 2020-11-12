@@ -8,7 +8,10 @@ const Employee  = db.Employee
 const app = express()
  
 app.use(basicAuth({
-    users: { 'test': 'testing123' }
+    users: { 'test': 'testing123' },
+    unauthorizedResponse: (req) => {
+        return 'Invaild Username or Password'
+    }
 }))
 app.use(express.json())
 app.use(cors())
