@@ -3,7 +3,7 @@ test in CMU
 <br/>
 setup
 <br/>
-ื1. npm install
+1. npm install
 <br/>
 2.  npx sequelize-cli db:migrate
 <br/>
