@@ -38,6 +38,23 @@ app.post('/',async (req, res) => {
         message: 'Bad request, No body data'
     })
 })
+app.get('/:id',async (req, res) => {
+    const id = req.params.id
+    if(id){
+        try {
+            const lists = await Employee.findAll()
+            return res.json({results: lists})
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Cannot get data from database.'
+            })
+        }
+    }
+    return res.status(400).json({
+        message: 'Bad request, No param :id'
+    })
+})
+
 
  
 var server = app.listen(8081, () => {
