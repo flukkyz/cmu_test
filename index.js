@@ -15,7 +15,7 @@ app.use(cors())
 app.get('/',async (req, res) => {
     try {
         const lists = await Employee.findAll()
-        return res.json({results: lists})
+        return res.json({result: lists})
     } catch (error) {
         return res.status(500).json({
             message: 'Cannot get data from database.'
@@ -26,8 +26,12 @@ app.post('/',async (req, res) => {
     const data = req.body
     if(data){
         try {
-            const lists = await Employee.findAll()
-            return res.json({results: lists})
+            const newData = await db.sequelize.transaction((t) => {
+                return Employee.create(data,{
+                    transaction: t
+                })
+            })
+            return res.status(201).json({result: newData})
         } catch (error) {
             return res.status(500).json({
                 message: 'Cannot get data from database.'
@@ -43,7 +47,7 @@ app.get('/:id',async (req, res) => {
     if(id){
         try {
             const lists = await Employee.findAll()
-            return res.json({results: lists})
+            return res.json({result: lists})
         } catch (error) {
             return res.status(500).json({
                 message: 'Cannot get data from database.'
@@ -52,6 +56,31 @@ app.get('/:id',async (req, res) => {
     }
     return res.status(400).json({
         message: 'Bad request, No param :id'
+    })
+})
+app.put('/:id',async (req, res) => {
+    const id = req.params.id
+    const data = req.body
+    if(id && data){
+        try {
+            const newData = await db.sequelize.transaction((t) => {
+                return Employee.update(data,{
+                    where: {
+                        id
+                    }
+                },{
+                    transaction: t
+                })
+            })
+            return res.json({result: newData})
+        } catch (error) {
+            return res.status(500).json({
+                message: 'Cannot get data from database.'
+            })
+        }
+    }
+    return res.status(400).json({
+        message: 'Bad request not param :id'
     })
 })
 
