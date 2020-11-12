@@ -7,6 +7,7 @@ npm start
 <br/>
 <br/>
 
-run docker
-docker build -t . test-cmu
+run docker (network host working)
+<br/>
+docker-compose up
 
