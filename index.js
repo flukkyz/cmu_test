@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const moment = require('moment')
 const basicAuth = require('express-basic-auth')
 const db = require('./models')
 const Employee  = db.Employee
@@ -25,6 +26,37 @@ app.get('/employees',async (req, res) => {
 app.post('/employees',async (req, res) => {
     const data = req.body
     if(data){
+        if(!data.firstname){
+            return res.status(500).json({
+                message: "Invaild form, firstname is not be blank."
+            })
+        }
+        if(!data.lastname){
+            return res.status(500).json({
+                message: "Invaild form, lastname is not be blank."
+            })
+        }
+        if(!data.birthday){
+            return res.status(500).json({
+                message: "Invaild form, birthday is not be blank."
+            })
+        }
+        const d = moment(data.birthday,'YYYY-MM-DD');
+        if(d == null || !d.isValid()){
+            return res.status(500).json({
+                message: "Invaild form, birthday is invaild."
+            })
+        }
+        if(!data.email){
+            return res.status(500).json({
+                message: "Invaild form, email is not be blank."
+            })
+        }
+        if(!/\S+@\S+\.\S+/.test(data.email)){
+            return res.status(500).json({
+                message: "Invaild form, email is invaild."
+            })
+        }
         try {
             const newData = await db.sequelize.transaction((t) => {
                 return Employee.create(data,{
@@ -34,7 +66,7 @@ app.post('/employees',async (req, res) => {
             return res.status(201).json({result: newData})
         } catch (error) {
             return res.status(500).json({
-                message: 'Cannot get data from database.'
+                message: 'Cannot post data from database.'
             })
         }
     }
@@ -62,6 +94,37 @@ app.put('/employees/:id',async (req, res) => {
     const id = req.params.id
     const data = req.body
     if(id && data){
+        if(!data.firstname){
+            return res.status(500).json({
+                message: "Invaild form, firstname is not be blank."
+            })
+        }
+        if(!data.lastname){
+            return res.status(500).json({
+                message: "Invaild form, lastname is not be blank."
+            })
+        }
+        if(!data.birthday){
+            return res.status(500).json({
+                message: "Invaild form, birthday is not be blank."
+            })
+        }
+        const d = moment(data.birthday,'YYYY-MM-DD');
+        if(d == null || !d.isValid()){
+            return res.status(500).json({
+                message: "Invaild form, birthday is invaild."
+            })
+        }
+        if(!data.email){
+            return res.status(500).json({
+                message: "Invaild form, email is not be blank."
+            })
+        }
+        if(!/\S+@\S+\.\S+/.test(data.email)){
+            return res.status(500).json({
+                message: "Invaild form, email is invaild."
+            })
+        }
         try {
             const newData = await db.sequelize.transaction((t) => {
                 return Employee.update(data,{
@@ -75,7 +138,7 @@ app.put('/employees/:id',async (req, res) => {
             return res.json({result: newData})
         } catch (error) {
             return res.status(500).json({
-                message: 'Cannot get data from database.'
+                message: 'Cannot put data from database.'
             })
         }
     }
@@ -95,7 +158,7 @@ app.delete('/employees/:id',async (req, res) => {
             return res.status(204).send()
         } catch (error) {
             return res.status(500).json({
-                message: 'Cannot get data from database.'
+                message: 'Cannot delete data from database.'
             })
         }
     }
