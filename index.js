@@ -22,9 +22,9 @@ app.get('/',async (req, res) => {
         })
     }
 })
-app.get('/:id',async (req, res) => {
-    const id = req.params.id
-    if(id){
+app.post('/',async (req, res) => {
+    const data = req.body
+    if(data){
         try {
             const lists = await Employee.findAll()
             return res.json({results: lists})
@@ -35,9 +35,10 @@ app.get('/:id',async (req, res) => {
         }
     }
     return res.status(400).json({
-        message: 'Bad request not param :id'
+        message: 'Bad request, No body data'
     })
 })
+
  
 var server = app.listen(8081, () => {
 var host = server.address().address
