@@ -1,4 +1,12 @@
 # cmu_test
 test in CMU
-1. run 
+<br/>
+run node
+<br/>
+npm start
+<br/>
+<br/>
+
+run docker
+docker build -t . test-cmu
 
